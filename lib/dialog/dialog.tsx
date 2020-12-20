@@ -86,90 +86,53 @@ Dialog.defaultProps = {
   closeOnClickMask: false,
 }
 
-const x = (content: string) => {
+const modal = (content: ReactNode, buttons?: Array<ReactElement>, afterClose?: () => void) => {
   // 如何动态创建组件 
   // React.render
-  const onClose = () => {
+  // 重复代码等全部都写完(组件)了再优化 
+  const close = () => {
     ReactDOM.render(React.cloneElement(component, { visible: false }), div)
     ReactDOM.unmountComponentAtNode(div)
     div.remove()
   }
+
   const component =
     <Dialog
       visible={true}
-      onClose={onClose}
-      buttons={[<Button onClick={onClose}>ok</Button>]}
+      onClose={() => {
+        close()
+        afterClose && afterClose()
+      }}
+      buttons={buttons}
     >{content}</Dialog>
 
   const div = document.createElement('div')
   document.body.append(div)
   ReactDOM.render(component, div)
+
+  return close
 }
 
 const alert = (content: string) => {
-  // 如何动态创建组件 
-  // React.render
-  const onClose = () => {
-    ReactDOM.render(React.cloneElement(component, { visible: false }), div)
-    ReactDOM.unmountComponentAtNode(div)
-    div.remove()
-  }
-  const component =
-    <Dialog
-      visible={true}
-      onClose={onClose}
-      buttons={[<Button onClick={onClose}>ok</Button>]}
-    >{content}</Dialog>
-
-  const div = document.createElement('div')
-  document.body.append(div)
-  ReactDOM.render(component, div)
+  const buttons =
+    [<Button onClick={() => { close() }}>ok</Button>]
+  const close = modal(content, buttons)
 }
 
 const confirm = (content: string, yes?: () => void, no?: () => void) => {
-  // 重复代码等全部都写完(组件)了再优化 
   const onYes = () => {
-    ReactDOM.render(React.cloneElement(component, { visible: false }), div)
-    ReactDOM.unmountComponentAtNode(div)
-    div.remove()
+    close()
     yes && yes()
   };
   const onNo = () => {
-    ReactDOM.render(React.cloneElement(component, { visible: false }), div)
-    ReactDOM.unmountComponentAtNode(div)
-    div.remove()
+    close()
     no && no()
   };
-
-  const component =
-    <Dialog
-      visible={true}
-      onClose={onNo}
-      buttons={[
-        <Button onClick={onYes}>yes</Button>,
-        <Button onClick={onNo}>no</Button>,
-      ]}
-    >{content}</Dialog>
-
-  const div = document.createElement('div')
-  document.body.append(div)
-  ReactDOM.render(component, div)
-}
-
-const modal = (content: ReactNode) => {
-  // 重复代码等全部都写完(组件)了再优化 
-  const onClose = () => {
-    ReactDOM.render(React.cloneElement(component, { visible: false }), div)
-    ReactDOM.unmountComponentAtNode(div)
-    div.remove()
-  };
-
-  const component = <Dialog visible={true} onClose={onClose} >{content}</Dialog>
-
-  const div = document.createElement('div')
-  document.body.append(div)
-  ReactDOM.render(component, div)
-  return onClose
+  const buttons = [
+    <Button onClick={onYes}>yes</Button>,
+    <Button onClick={onNo}>no</Button>,
+  ]
+  const close = modal(content, buttons, no)
 }
 
 export { alert, confirm, modal };
