@@ -1,60 +1,79 @@
-import React, {useState} from 'react';
-import Dialog, {alert, confirm, modal} from './dialog';
+import Button from "../button";
+import React, { useState } from "react";
+// 如果你引入了一个组件要大写，否则用小写
+import Dialog, { alert, confirm, modal } from "./dialog";
 
 export default function () {
   const [x, setX] = useState(false);
   const [y, setY] = useState(false);
+
   const openModal = () => {
-    const close = modal(<h1>你好
-      <button onClick={() => close()}>close</button>
-    </h1>);
-  };
+    const close = modal(
+      <h1>hi <Button onClick={() => {close()}}>close</Button> </h1>,
+    ) 
+  }
+
   return (
     <div>
       <div>
-        <h1>example 4</h1>
-        <button onClick={openModal}>modal</button>
+        <h1>example 1</h1>
+        <Button onClick={() => setX(!x)}>show dialog1</Button>
+        <Dialog
+          visible={x}
+          buttons={
+            // 这里虽然使用起来很麻烦，但是理解起来(原理)非常的简单
+            [
+              <Button onClick={() => { setX(false); }} > 1 </Button>,
+              <Button onClick={() => { setX(false); }} > 2 </Button>,
+            ]
+          }
+          onClose={() => { setX(false); }}
+        >
+          <strong>dialog1</strong>
+        </Dialog>
       </div>
-
+      <div>
+        <h1>example 2</h1>
+        <Button onClick={() => setY(!y)}>show dialog2</Button>
+        <Dialog
+          visible={y}
+          buttons={
+            // 这里虽然使用起来很麻烦，但是理解起来(原理)非常的简单
+            [
+              <Button onClick={() => { setY(false); }} > 1 </Button>,
+              <Button onClick={() => { setY(false); }} > 2 </Button>,
+            ]
+          }
+          onClose={() => { setY(false); }}
+          closeOnClickMask={true}
+        >
+          <strong>dialog2</strong>
+        </Dialog>
+      </div>
       <div>
         <h1>example 3</h1>
-        <button onClick={() => alert('1')}>alert</button>
-        <button onClick={() => confirm('1', () => {
-          console.log('你点击了yes');
-        }, () => {
-          console.log('你点击了no');
-        })}>confirm
-        </button>
+        <Button onClick={() => { alert('hi') }} >alert</Button>
+        <Button
+          onClick={() => {
+            confirm(
+              'confirm',
+              () => { console.log('yes') },
+              () => { console.log('no') })
+          }} >confirm</Button>
+          {/* 你会发现这里 modal 里面的按钮不能关闭 modal  */}
+          {/* 怎么解决？ 使用函数抽象为你能理解的方式
+          function f1() { 
+            let visible = false return {}
+            return () => {
+              visible = false
+              console.log(visible)
+            }
+          }
+          api = f1()
+          api() */}
+          {/* react 全部都是函数 */}
+        <Button onClick={openModal} >modal</Button>
       </div>
-
-      <div style={{position: 'relative', zIndex: 10, border: '1px solid red', color: 'red'}}>
-        <h1>example 1</h1>
-        <button onClick={() => setX(!x)}>click</button>
-        <Dialog visible={x} buttons={
-          [
-            <button onClick={() => {setX(false);}}>1</button>,
-            <button onClick={() => {setX(false);}}>2</button>
-          ]
-        } onClose={() => {setX(false);}}>
-          <strong>hi</strong>
-        </Dialog>
-      </div>
-
-
-      <div style={{position: 'relative', zIndex: 9}}>
-        <h1>example 2</h1>
-        <button onClick={() => setY(!y)}>click</button>
-        <Dialog visible={y} closeOnClickMask={true} buttons={
-          [
-            <button onClick={() => {setY(false);}}>1</button>,
-            <button onClick={() => {setY(false);}}>2</button>
-          ]
-        } onClose={() => {setY(false);}}>
-          <strong>hi</strong>
-        </Dialog>
-      </div>
-
-
     </div>
   );
 }
