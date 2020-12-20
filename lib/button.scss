@@ -1,0 +1,52 @@
+.ssh-button {
+  display: inline-block;
+  border-top: 1px solid #fbd0b2;
+  border-bottom: 1px solid #fce1ce;
+  font-size: 12px;
+  &:hover {
+    border-top: 1px solid #ffbe91;
+    border-bottom: 1px solid #ffcead;
+    .ssh-button {
+      &-inner-wrapper { 
+        border-left: 1px solid #ffbe91;
+        border-right: 1px solid #ffa76b;
+        border-bottom: 1px solid #ffa76b;
+      }
+
+      &-content {
+        background: #ffdfc9;
+        border-left: 2px solid #ffe7d7;
+        border-top: 1px solid #ffebdd;
+        border-bottom: .2em solid #ffdac1;
+      }
+    }
+  }
+
+  &-inner-wrapper {
+    float: left;
+    border-left: 1px solid #fbd0b2;
+    border-right: 1px solid #f9b88c;
+    border-bottom: 1px solid #f9b88c;
+    margin: 0 -1px;
+    position: relative;
+  }
+
+  &-content {
+    display: inline-block;
+    padding: .3em .6em 0;
+    background: #fef3eb;
+    border-left: 2px solid #fff;
+    border-top: 1px solid #fff;
+    border-bottom: .2em solid #feeee3;
+    line-height: 1.1em;
+    cursor: pointer;
+  }
+
+  margin: 0 .5em;
+  &:first-child {
+    margin-left: 0;
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+}
