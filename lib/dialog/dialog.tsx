@@ -50,8 +50,7 @@ const Dialog: React.FC<Props> = (props) => {
       props.onClose(e);
     }
   };
-
-  const x = props.visible ? (
+  const result = props.visible ? (
     <Fragment>
       <div className={sc("mask")} onClick={onClickMask}></div>
       <div className={sc()}>
@@ -79,7 +78,7 @@ const Dialog: React.FC<Props> = (props) => {
     //   <div className="ssh-dialog">{props.children}</div>
     // </div>
     null;
-  return ReactDOM.createPortal(x, document.body);
+  return ReactDOM.createPortal(result, document.body);
 };
 
 Dialog.defaultProps = {
